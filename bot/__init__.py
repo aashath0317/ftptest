@@ -402,7 +402,8 @@ try:
     FTP_USER = getConfig('FTP_USER')
     FTP_PASSWORD = getConfig('FTP_PASSWORD')
 except KeyError:
-    FTP_SERVER = ""
+    FTP_SERVER = False
+    logging.warning('FTP not provided')
 try:
     QB_SEED = getConfig('QB_SEED')
     QB_SEED = QB_SEED.lower() == 'true'
