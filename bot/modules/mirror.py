@@ -364,7 +364,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
     if len(pswdMsg) > 1:
         pswd = pswdMsg[1]
 
-    listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, isFtp pswd)
+    listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, isFtp, pswd)
 
     reply_to = update.message.reply_to_message
     if reply_to is not None:
