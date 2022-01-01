@@ -337,7 +337,7 @@ class MirrorListener(listeners.MirrorListeners):
         else:
             update_all_messages()
 
-def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False, pswd=None):
+def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False, isFtp, pswd=None):
     mesg = update.message.text.split('\n')
     message_args = mesg[0].split(' ', maxsplit=1)
     name_args = mesg[0].split('|', maxsplit=1)
@@ -364,7 +364,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
     if len(pswdMsg) > 1:
         pswd = pswdMsg[1]
 
-    listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, pswd)
+    listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, isFtp pswd)
 
     reply_to = update.message.reply_to_message
     if reply_to is not None:
@@ -447,7 +447,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
             return sendMessage(msg, bot, update)
 
     if bot_utils.is_gdrive_link(link):
-        if not isZip and not extract and not isLeech:
+        if not isZip and not extract and not isLeech and not is Ftp:
             gmsg = f"Use /{BotCommands.CloneCommand} to clone Google Drive file/folder\n\n"
             gmsg += f"Use /{BotCommands.ZipMirrorCommand} to make zip of Google Drive folder\n\n"
             gmsg += f"Use /{BotCommands.UnzipMirrorCommand} to extracts Google Drive archive file"
@@ -496,9 +496,15 @@ def unzip_leech(update, context):
 
 def zip_leech(update, context):
     _mirror(context.bot, update, True, isLeech=True)
+	
+def zip_ftp(update, context):
+    _mirror(context.bot, update, True, isFtp=True)
 
 def qb_leech(update, context):
     _mirror(context.bot, update, isQbit=True, isLeech=True)
+
+def qb_ftp(update, context):
+    _mirror(context.bot, update, isQbit=True, isFtp=True)
 
 def qb_unzip_leech(update, context):
     _mirror(context.bot, update, extract=True, isQbit=True, isLeech=True)
@@ -506,6 +512,9 @@ def qb_unzip_leech(update, context):
 def qb_zip_leech(update, context):
     _mirror(context.bot, update, True, isQbit=True, isLeech=True)
 
+def qb_zip_ftp(update, context):
+    _mirror(context.bot, update, True, isQbit=True, isFtp=True)
+	
 mirror_handler = CommandHandler(BotCommands.MirrorCommand, mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 unzip_mirror_handler = CommandHandler(BotCommands.UnzipMirrorCommand, unzip_mirror,
@@ -524,11 +533,15 @@ unzip_leech_handler = CommandHandler(BotCommands.UnzipLeechCommand, unzip_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 zip_leech_handler = CommandHandler(BotCommands.ZipLeechCommand, zip_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+zip_ftp_handler = CommandHandler(BotCommands.ZipFtpCommand, zip_ftp,
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_leech_handler = CommandHandler(BotCommands.QbLeechCommand, qb_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_unzip_leech_handler = CommandHandler(BotCommands.QbUnzipLeechCommand, qb_unzip_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_zip_leech_handler = CommandHandler(BotCommands.QbZipLeechCommand, qb_zip_leech,
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+qb_zip_ftp_handler = CommandHandler(BotCommands.QbZipFtpCommand, qb_zip_ftp,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 
 dispatcher.add_handler(mirror_handler)
@@ -540,6 +553,8 @@ dispatcher.add_handler(qb_zip_mirror_handler)
 dispatcher.add_handler(leech_handler)
 dispatcher.add_handler(unzip_leech_handler)
 dispatcher.add_handler(zip_leech_handler)
+dispatcher.add_handler(zip_ftp_handler)
 dispatcher.add_handler(qb_leech_handler)
 dispatcher.add_handler(qb_unzip_leech_handler)
 dispatcher.add_handler(qb_zip_leech_handler)
+dispatcher.add_handler(qb_zip_ftp_handler)
