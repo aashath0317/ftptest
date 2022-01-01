@@ -2,9 +2,6 @@ from ftplib import FTP
 import ftplib
 import os,subprocess
 
-FTP_SERVER = "ftp.c2ptech.com"
-FTP_USER = "Aashath@c2ptech.com"
-FTP_PASSWORD = "Aashath0317@"
 ftp = FTP(FTP_SERVER)
 ftp.login(FTP_USER,FTP_PASSWORD)
 m_path= 
