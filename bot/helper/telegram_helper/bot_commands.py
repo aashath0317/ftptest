@@ -38,6 +38,7 @@ class _BotCommands:
         self.ZipFtpCommand = 'zipftp'
         self.QbLeechCommand = 'qbleech'
         self.QbUnzipLeechCommand = 'qbunzipleech'
+        self.QbZipLeechCommand = 'qbzipleech'
         self.QbZipFtpCommand = 'qbzipftp'
         self.LeechWatchCommand = 'leechwatch'
         self.LeechZipWatchCommand = 'leechzipwatch'
