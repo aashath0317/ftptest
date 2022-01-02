@@ -162,7 +162,6 @@ class MirrorListener(listeners.MirrorListeners):
                             LOGGER.info(f"Splitting: {up_name}")
                         fs_utils.split(f_path, f_size, filee, dirpath, TG_SPLIT_SIZE)
                         os.remove(f_path)
-        
 	if self.isLeech:
             LOGGER.info(f"Leech Name: {up_name}")
             tg = pyrogramEngine.TgUploader(up_name, self)
@@ -171,7 +170,6 @@ class MirrorListener(listeners.MirrorListeners):
                 download_dict[self.uid] = tg_upload_status
             update_all_messages()
             tg.upload()
-		
 	elif self.isFtp:
             LOGGER.info(f"FTP name: {up_name}")
             ftp = FTP(FTP_SERVER)
@@ -183,8 +181,7 @@ class MirrorListener(listeners.MirrorListeners):
             ftp.set_pasv(True)
             file = open(up_name, 'rb')
             ftp.storbinary(f"STOR {up_name}", file)
-
-        else:
+	else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
             upload_status = UploadStatus(drive, size, gid, self)
