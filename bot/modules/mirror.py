@@ -171,7 +171,7 @@ class MirrorListener(listeners.MirrorListeners):
             update_all_messages()
             tg.upload()
 		
-	elif self.isFtp:
+		elif self.isFtp:
             LOGGER.info(f"FTP name: {up_name}")
             ftp = FTP(FTP_SERVER)
             ftp.login(FTP_USER,FTP_PASSWORD)
