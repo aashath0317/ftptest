@@ -162,7 +162,8 @@ class MirrorListener(listeners.MirrorListeners):
                             LOGGER.info(f"Splitting: {up_name}")
                         fs_utils.split(f_path, f_size, filee, dirpath, TG_SPLIT_SIZE)
                         os.remove(f_path)
-        if self.isLeech:
+        
+	if self.isLeech:
             LOGGER.info(f"Leech Name: {up_name}")
             tg = pyrogramEngine.TgUploader(up_name, self)
             tg_upload_status = TgUploadStatus(tg, size, gid, self)
@@ -171,7 +172,7 @@ class MirrorListener(listeners.MirrorListeners):
             update_all_messages()
             tg.upload()
 		
-		elif self.isFtp:
+	elif self.isFtp:
             LOGGER.info(f"FTP name: {up_name}")
             ftp = FTP(FTP_SERVER)
             ftp.login(FTP_USER,FTP_PASSWORD)
