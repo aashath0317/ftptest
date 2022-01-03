@@ -13,7 +13,7 @@ from telegram import InlineKeyboardMarkup
 
 from bot import Interval, INDEX_URL, BUTTON_FOUR_NAME, BUTTON_FOUR_URL, BUTTON_FIVE_NAME, BUTTON_FIVE_URL, \
                 BUTTON_SIX_NAME, BUTTON_SIX_URL, BLOCK_MEGA_FOLDER, BLOCK_MEGA_LINKS, VIEW_LINK, aria2, QB_SEED, \
-                dispatcher, DOWNLOAD_DIR, download_dict, download_dict_lock, TG_SPLIT_SIZE, LOGGER,  FTP_SERVER, FTP_USER, FTP_PASSWORD
+                dispatcher, DOWNLOAD_DIR, download_dict, download_dict_lock, TG_SPLIT_SIZE, LOGGER
 from bot.helper.ext_utils import fs_utils, bot_utils
 from bot.helper.ext_utils.shortenurl import short_url
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException, NotSupportedExtractionArchive
@@ -37,7 +37,7 @@ from bot.helper.telegram_helper import button_build
 
 
 class MirrorListener(listeners.MirrorListeners):
-    def __init__(self, bot, update, isZip=False, extract=False, isQbit=False, isLeech=False, pswd=None, tag=None, isFtp=False):
+    def __init__(self, bot, update, isZip=False, extract=False, isQbit=False, isLeech=False, pswd=None, tag=None):
         super().__init__(bot, update)
         self.extract = extract
         self.isZip = isZip
@@ -45,8 +45,6 @@ class MirrorListener(listeners.MirrorListeners):
         self.isLeech = isLeech
         self.pswd = pswd
         self.tag = tag
-		self.isFtp = isFtp
-		
 
     def onDownloadStarted(self):
         pass
@@ -170,16 +168,6 @@ class MirrorListener(listeners.MirrorListeners):
                 download_dict[self.uid] = tg_upload_status
             update_all_messages()
             tg.upload()
-        elif self.isFtp:
-            LOGGER.info(f"FTP name: {up_name}")
-            ftp = FTP(FTP_SERVER)
-            ftp.login(FTP_USER,FTP_PASSWORD)
-            upload_status(drive, size, gid, self)
-            with download_dict_lock:
-                download_dict[self.uid] = upload_status
-            ftp.set_pasv(True)
-            file = open(up_name, 'rb')
-            ftp.storbinary(f"STOR {up_name}", file)
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
@@ -316,7 +304,7 @@ class MirrorListener(listeners.MirrorListeners):
         else:
             update_all_messages()
 
-def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False, isFtp, pswd=None):
+def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False, pswd=None):
     mesg = update.message.text.split('\n')
     message_args = mesg[0].split(' ', maxsplit=1)
     name_args = mesg[0].split('|', maxsplit=1)
@@ -375,7 +363,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
                 file_name = str(time.time()).replace(".", "") + ".torrent"
                 link = file.get_file().download(custom_path=file_name)
             elif file.mime_type != "application/x-bittorrent":
-                listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, isFtp, pswd, tag)
+                listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, pswd, tag)
                 tg_downloader = TelegramDownloadHelper(listener)
                 ms = update.message
                 tg_downloader.add_download(ms, f'{DOWNLOAD_DIR}{listener.uid}/', name)
@@ -436,10 +424,10 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
             msg = "Qb commands for torrents only. if you are trying to dowload torrent then report."
             return sendMessage(msg, bot, update)
 
-    listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, isFtp, pswd, tag)
+    listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, pswd, tag)
 
     if bot_utils.is_gdrive_link(link):
-        if not isZip and not extract and not isLeech and not isFtp:
+        if not isZip and not extract and not isLeech:
             gmsg = f"Use /{BotCommands.CloneCommand} to clone Google Drive file/folder\n\n"
             gmsg += f"Use /{BotCommands.ZipMirrorCommand} to make zip of Google Drive folder\n\n"
             gmsg += f"Use /{BotCommands.UnzipMirrorCommand} to extracts Google Drive archive file"
@@ -488,15 +476,9 @@ def unzip_leech(update, context):
 
 def zip_leech(update, context):
     _mirror(context.bot, update, True, isLeech=True)
-	
-def zip_ftp(update, context):
-    _mirror(context.bot, update, True, isFtp=True)
 
 def qb_leech(update, context):
     _mirror(context.bot, update, isQbit=True, isLeech=True)
-
-def qb_ftp(update, context):
-    _mirror(context.bot, update, isQbit=True, isFtp=True)
 
 def qb_unzip_leech(update, context):
     _mirror(context.bot, update, extract=True, isQbit=True, isLeech=True)
@@ -504,9 +486,6 @@ def qb_unzip_leech(update, context):
 def qb_zip_leech(update, context):
     _mirror(context.bot, update, True, isQbit=True, isLeech=True)
 
-def qb_zip_ftp(update, context):
-    _mirror(context.bot, update, True, isQbit=True, isFtp=True)
-	
 mirror_handler = CommandHandler(BotCommands.MirrorCommand, mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 unzip_mirror_handler = CommandHandler(BotCommands.UnzipMirrorCommand, unzip_mirror,
@@ -525,15 +504,11 @@ unzip_leech_handler = CommandHandler(BotCommands.UnzipLeechCommand, unzip_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 zip_leech_handler = CommandHandler(BotCommands.ZipLeechCommand, zip_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
-zip_ftp_handler = CommandHandler(BotCommands.ZipFtpCommand, zip_ftp,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_leech_handler = CommandHandler(BotCommands.QbLeechCommand, qb_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_unzip_leech_handler = CommandHandler(BotCommands.QbUnzipLeechCommand, qb_unzip_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_zip_leech_handler = CommandHandler(BotCommands.QbZipLeechCommand, qb_zip_leech,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
-qb_zip_ftp_handler = CommandHandler(BotCommands.QbZipFtpCommand, qb_zip_ftp,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 
 dispatcher.add_handler(mirror_handler)
@@ -545,8 +520,6 @@ dispatcher.add_handler(qb_zip_mirror_handler)
 dispatcher.add_handler(leech_handler)
 dispatcher.add_handler(unzip_leech_handler)
 dispatcher.add_handler(zip_leech_handler)
-dispatcher.add_handler(zip_ftp_handler)
 dispatcher.add_handler(qb_leech_handler)
 dispatcher.add_handler(qb_unzip_leech_handler)
 dispatcher.add_handler(qb_zip_leech_handler)
-dispatcher.add_handler(qb_zip_ftp_handler)
