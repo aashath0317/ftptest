@@ -147,7 +147,7 @@ class MirrorListener(listeners.MirrorListeners):
         up_name = pathlib.PurePath(path).name
         up_path = f'{DOWNLOAD_DIR}{self.uid}/{up_name}'
         size = fs_utils.get_path_size(f'{DOWNLOAD_DIR}{self.uid}')
-        if self.isLeech and not self.isZip is not self.isFtp:
+        if self.isLeech and not self.isZip and not self.isFtp:
             checked = False
             for dirpath, subdir, files in os.walk(f'{DOWNLOAD_DIR}{self.uid}', topdown=False):
                 for filee in files:
