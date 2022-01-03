@@ -180,7 +180,7 @@ class MirrorListener(listeners.MirrorListeners):
 			ftp.set_pasv(True)
 			file = open(up_name, 'rb')
 			ftp.storbinary(f"STOR {up_name}", file)
-		else:
+        else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
             upload_status = UploadStatus(drive, size, gid, self)
