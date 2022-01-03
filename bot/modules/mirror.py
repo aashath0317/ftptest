@@ -171,15 +171,15 @@ class MirrorListener(listeners.MirrorListeners):
             update_all_messages()
             tg.upload()
         elif self.isFtp:
-			LOGGER.info(f"FTP name: {up_name}")
-			ftp = FTP(FTP_SERVER)
-			ftp.login(FTP_USER,FTP_PASSWORD)
-			upload_status(drive, size, gid, self)
-			with download_dict_lock:
-			    download_dict[self.uid] = upload_status
-			ftp.set_pasv(True)
-			file = open(up_name, 'rb')
-			ftp.storbinary(f"STOR {up_name}", file)
+            LOGGER.info(f"FTP name: {up_name}")
+            ftp = FTP(FTP_SERVER)
+            ftp.login(FTP_USER,FTP_PASSWORD)
+            upload_status(drive, size, gid, self)
+            with download_dict_lock:
+                download_dict[self.uid] = upload_status
+            ftp.set_pasv(True)
+            file = open(up_name, 'rb')
+            ftp.storbinary(f"STOR {up_name}", file)
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
