@@ -390,7 +390,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
             link = f'{link[0]}://{ussr}:{pssw}@{link[1]}'
         except IndexError:
             pass
-    if FTP_SERVER=False:
+    if FTP_SERVER = False:
       help_msg = "<b>FTP Env not provided</b> "
       return sendMessage(help_msg, bot, update)
     
