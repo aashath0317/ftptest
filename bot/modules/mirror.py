@@ -175,7 +175,7 @@ class MirrorListener(listeners.MirrorListeners):
           ftp = FTP(FTP_SERVER)
           ftp.login(FTP_USER,FTP_PASSWORD)
           ftp.set_pasv(True)
-          os.listdir()
+          print(os.listdir())  
           file = open(up_name, 'rb')
           up = "<b>Uploading<b> 📤 to FTP Server"
           sendMessage(up, context.bot, update)
