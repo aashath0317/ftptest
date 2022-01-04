@@ -171,7 +171,11 @@ class MirrorListener(listeners.MirrorListeners):
                 download_dict[self.uid] = tg_upload_status
             update_all_messages()
             tg.upload()
+            
         elif self.isFtp:
+          LOGGER.info(f"FTP name: {up_name}")
+          ftp = FTP(FTP_SERVER)
+          ftp.login(FTP_USER,FTP_PASSWORD)
           def files(path):
             for file in os.listdir(path):
               if os.path.isfile(os.path.join(path, file)):
@@ -183,25 +187,18 @@ class MirrorListener(listeners.MirrorListeners):
           loop = 0
           while not total_files == loop:
             file_name=up_path[loop]
-            path = file_name.strip(path+"/")
-            path = glob.glob(os.path.join(path, '*'))
-            path=str(path)
-            path = file_name.strip(path+"/")
-            for file in files(path):
-              if file == up_file:
-                
+            path2 = glob.glob(os.path.join(file_name, '*'))
+            path2 = str(path2[0])
             loop = loop+1
-          LOGGER.info(f"FTP name: {up_name}")
-          ftp = FTP(FTP_SERVER)
-          ftp.login(FTP_USER,FTP_PASSWORD)
-          ftp.set_pasv(True)
-          print(os.listdir())  
-          file = open(up_name, 'rb')
-          up = "<b>Uploading<b> 📤 to FTP Server"
-          sendMessage(up, context.bot, update)
-          ftp.storbinary(f"STOR {up_name}", file)
-          comp = "<b>Uploaded<b> ✅"
-          sendMessage(comp, context.bot, update)
+            for file in files(file_name):
+              if file == up_file:
+                ftp.set_pasv(True)
+                file = open(path2, 'rb')
+                up = "<b>Uploading<b> 📤 to FTP Server"
+                sendMessage(up, context.bot, update)
+                ftp.storbinary(f"STOR {up_name}", file)
+                comp = "<b>Uploaded<b> ✅"
+                sendMessage(comp, context.bot, update)
     
         else:
             LOGGER.info(f"Upload Name: {up_name}")
