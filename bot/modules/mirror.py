@@ -173,8 +173,6 @@ class MirrorListener(listeners.MirrorListeners):
             tg.upload()
             
         elif self.isFtp:
-          up = "Uploading 📤 to FTP Server"
-          sendMessage(up, self.bot, self.update)
           LOGGER.info(f"FTP name: {up_name}")
           ftp = FTP(FTP_SERVER)
           ftp.login(FTP_USER,FTP_PASSWORD)
@@ -196,10 +194,14 @@ class MirrorListener(listeners.MirrorListeners):
               if file == up_file:
                 ftp.set_pasv(True)
                 file = open(path2, 'rb')
+                up = "Uploading to FTP Server 📤"
+                sendMessage(up, self.bot, self.update)
                 ftp.storbinary(f"STOR {up_name}", file)
+                up = "Uploaded ✅"
+                sendMessage(up, self.bot, self.update)
                 
-          comp = "Uploaded ✅"
-          sendMessage(comp, self.bot, self.update)
+         
+          
     
         else:
             LOGGER.info(f"Upload Name: {up_name}")
