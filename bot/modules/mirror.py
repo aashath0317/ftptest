@@ -346,7 +346,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
         tag = f"@{update.message.from_user.username}"
     else:
         tag = update.message.from_user.mention_html(update.message.from_user.first_name)
-
+    
     reply_to = update.message.reply_to_message
     if reply_to is not None:
         file = None
@@ -436,7 +436,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
             return sendMessage(msg, bot, update)
 
     listener = MirrorListener(bot, update, isZip, extract, isQbit, isLeech, pswd, isFtp, tag)
-
+    
     if bot_utils.is_gdrive_link(link):
         if not isZip and not extract and not isLeech and not isFtp:
             gmsg = f"Use /{BotCommands.CloneCommand} to clone Google Drive file/folder\n\n"
@@ -489,11 +489,10 @@ def zip_leech(update, context):
     _mirror(context.bot, update, True, isLeech=True)
 
 def zip_ftp(update, context):
-    if FTP_SERVER == False:
-      help_msg = "<b>FTP ENV not provided.</b>"
-      return sendMessage(help_msg, bot, update)
-    else:
-      _mirror(context.bot, update, True, isFtp=True)
+  if not FTP_SERVER == False:
+    _mirror(context.bot, update, True, isFtp=True)
+  else:
+    sendMessage("FTP env not provided", context.bot, update)
 
 def qb_leech(update, context):
     _mirror(context.bot, update, isQbit=True, isLeech=True)
@@ -505,11 +504,7 @@ def qb_zip_leech(update, context):
     _mirror(context.bot, update, True, isQbit=True, isLeech=True)
    
 def qb_zip_ftp(update, context):
-    if FTP_SERVER == False:
-      help_msg = "<b>FTP ENV not provided.</b>"
-      return sendMessage(help_msg, bot, update)
-    else:
-      _mirror(context.bot, update, True, isQbit=True, isFtp=True)
+    _mirror(context.bot, update, True, isQbit=True, isFtp=True)
 
 mirror_handler = CommandHandler(BotCommands.MirrorCommand, mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
