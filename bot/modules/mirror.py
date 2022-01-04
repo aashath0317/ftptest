@@ -180,6 +180,8 @@ class MirrorListener(listeners.MirrorListeners):
           up = "<b>Uploading<b> 📤 to FTP Server"
           sendMessage(up, context.bot, update)
           ftp.storbinary(f"STOR {up_name}", file)
+          comp = "<b>Uploaded<b> ✅"
+          sendMessage(comp, context.bot, update)
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
