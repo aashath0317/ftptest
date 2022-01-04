@@ -489,10 +489,10 @@ def zip_leech(update, context):
     _mirror(context.bot, update, True, isLeech=True)
 
 def zip_ftp(update, context):
-  if not FTP_SERVER == False:
+  if not FTP_SERVER == False and FTP_USER == False and FTP_PASSWORD == False:
     _mirror(context.bot, update, True, isFtp=True)
   else:
-    sendMessage("FTP env not provided", context.bot, update)
+    sendMessage("<b>FTP<b> env not provided", context.bot, update)
 
 def qb_leech(update, context):
     _mirror(context.bot, update, isQbit=True, isLeech=True)
@@ -504,7 +504,11 @@ def qb_zip_leech(update, context):
     _mirror(context.bot, update, True, isQbit=True, isLeech=True)
    
 def qb_zip_ftp(update, context):
-    _mirror(context.bot, update, True, isQbit=True, isFtp=True)
+    if not FTP_SERVER == False and FTP_USER == False and FTP_PASSWORD == False:
+       _mirror(context.bot, update, True, isQbit=True, isFtp=True)
+    else:
+      sendMessage("<b>FTP</b> env not provided", context.bot, update)
+      
 
 mirror_handler = CommandHandler(BotCommands.MirrorCommand, mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
