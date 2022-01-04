@@ -490,7 +490,7 @@ def zip_leech(update, context):
     _mirror(context.bot, update, True, isLeech=True)
 
 def zip_ftp(update, context):
-  if not FTP_SERVER == False and FTP_USER == False and FTP_PASSWORD == False:
+  if not FTP_SERVER == False and not FTP_USER == False and not FTP_PASSWORD == False:
     _mirror(context.bot, update, True, isFtp=True)
   else:
     ftpmsg = "<b>FTP</b> env not provided"
@@ -506,7 +506,7 @@ def qb_zip_leech(update, context):
     _mirror(context.bot, update, True, isQbit=True, isLeech=True)
    
 def qb_zip_ftp(update, context):
-    if not FTP_SERVER == False and FTP_USER == False and FTP_PASSWORD == False:
+    if not FTP_SERVER == False and not FTP_USER == False and not FTP_PASSWORD == False:
        _mirror(context.bot, update, True, isQbit=True, isFtp=True)
     else:
       ftpmsg = "<b>FTP</b> env not provided"
