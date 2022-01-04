@@ -391,7 +391,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
         except IndexError:
             pass
           
-    if not bot_utils.is_url(link) and not bot_utils.is_magnet(link) and not os.path.exists(link) and not FTP_SERVER == False:
+    if not bot_utils.is_url(link) and not bot_utils.is_magnet(link) and not os.path.exists(link):
       help_msg = "<b>Send link along with command line:</b>"
       help_msg += "\n<code>/command</code> {link} |newname pswd: mypassword [𝚣𝚒𝚙/𝚞𝚗𝚣𝚒𝚙]"
       help_msg += "\n\n<b>By replying to link or file:</b>"
@@ -400,18 +400,7 @@ def _mirror(bot, update, isZip=False, extract=False, isQbit=False, isLeech=False
       help_msg += "\n<code>/command</code> {link} |newname pswd: mypassword\nusername\npassword"
       help_msg += "\n\n<b>Qbittorrent selection:</b>"
       help_msg += "\n<code>/qbcommand</code> <b>s</b> {link} or by replying to {file}"
-      return sendMessage(help_msg, bot, update)
-    elif not bot_utils.is_url(link) and not bot_utils.is_magnet(link) and not os.path.exists(link) and FTP_SERVER == False:
-      help_msg = "<b>Send link along with command line:</b>"
-      help_msg += "\n<code>/command</code> {link} |newname pswd: mypassword [𝚣𝚒𝚙/𝚞𝚗𝚣𝚒𝚙]"
-      help_msg += "\n\n<b>By replying to link or file:</b>"
-      help_msg += "\n<code>/command</code> |newname pswd: mypassword [𝚣𝚒𝚙/𝚞𝚗𝚣𝚒𝚙]"
-      help_msg += "\n\n<b>Direct link authorization:</b>"
-      help_msg += "\n<code>/command</code> {link} |newname pswd: mypassword\nusername\npassword"
-      help_msg += "\n\n<b>Qbittorrent selection:</b>"
-      help_msg += "\n<code>/qbcommand</code> <b>s</b> {link} or by replying to {file}"
-      help_msg += "<b>FTP Env not provided</b>"
-      return sendMessage(help_msg, bot, update)
+      return sendMessage(help_msg, bot, update)    
     
     LOGGER.info(link)
     gdtot_link = bot_utils.is_gdtot_link(link)
@@ -500,7 +489,11 @@ def zip_leech(update, context):
     _mirror(context.bot, update, True, isLeech=True)
 
 def zip_ftp(update, context):
-    _mirror(context.bot, update, True, isFtp=True)
+    if FTP_SERVER == False:
+      help_msg = "<b>FTP ENV not provided.</b>"
+      return sendMessage(help_msg, bot, update)
+    else:
+      _mirror(context.bot, update, True, isFtp=True)
 
 def qb_leech(update, context):
     _mirror(context.bot, update, isQbit=True, isLeech=True)
@@ -512,7 +505,11 @@ def qb_zip_leech(update, context):
     _mirror(context.bot, update, True, isQbit=True, isLeech=True)
    
 def qb_zip_ftp(update, context):
-    _mirror(context.bot, update, True, isQbit=True, isFtp=True)
+    if FTP_SERVER == False:
+      help_msg = "<b>FTP ENV not provided.</b>"
+      return sendMessage(help_msg, bot, update)
+    else:
+      _mirror(context.bot, update, True, isQbit=True, isFtp=True)
 
 mirror_handler = CommandHandler(BotCommands.MirrorCommand, mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
