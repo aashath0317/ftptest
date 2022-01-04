@@ -170,12 +170,12 @@ class MirrorListener(listeners.MirrorListeners):
                 download_dict[self.uid] = tg_upload_status
             update_all_messages()
             tg.upload()
-        elif self.isFtp:
-          
+        elif self.isFtp:   
           LOGGER.info(f"FTP name: {up_name}")
           ftp = FTP(FTP_SERVER)
           ftp.login(FTP_USER,FTP_PASSWORD)
           ftp.set_pasv(True)
+          os.listdir()
           file = open(up_name, 'rb')
           up = "<b>Uploading<b> 📤 to FTP Server"
           sendMessage(up, context.bot, update)
