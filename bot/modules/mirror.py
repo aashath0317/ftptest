@@ -7,6 +7,7 @@ import threading
 import re
 import time
 import shutil
+import glob
 
 from telegram.ext import CommandHandler
 from telegram import InlineKeyboardMarkup
@@ -170,7 +171,26 @@ class MirrorListener(listeners.MirrorListeners):
                 download_dict[self.uid] = tg_upload_status
             update_all_messages()
             tg.upload()
-        elif self.isFtp:   
+        elif self.isFtp:
+          def files(path):
+            for file in os.listdir(path):
+              if os.path.isfile(os.path.join(path, file)):
+                 yield file
+          path ="downloads"
+          up_file = up_name
+          up_path = glob.glob(os.path.join(path, '*'))
+          total_files = len(up_path)
+          loop = 0
+          while not total_files == loop:
+            file_name=up_path[loop]
+            path = file_name.strip(path+"/")
+            path = glob.glob(os.path.join(path, '*'))
+            path=str(path)
+            path = file_name.strip(path+"/")
+            for file in files(path):
+              if file == up_file:
+                
+            loop = loop+1
           LOGGER.info(f"FTP name: {up_name}")
           ftp = FTP(FTP_SERVER)
           ftp.login(FTP_USER,FTP_PASSWORD)
@@ -182,6 +202,7 @@ class MirrorListener(listeners.MirrorListeners):
           ftp.storbinary(f"STOR {up_name}", file)
           comp = "<b>Uploaded<b> ✅"
           sendMessage(comp, context.bot, update)
+    
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
