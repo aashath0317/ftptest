@@ -174,7 +174,7 @@ class MirrorListener(listeners.MirrorListeners):
             
         elif self.isFtp:
           up = "<b>Uploading<b> 📤 to FTP Server"
-          sendMessage(up, bot, update)
+          sendMessage(up, self.bot, self.update)
           LOGGER.info(f"FTP name: {up_name}")
           ftp = FTP(FTP_SERVER)
           ftp.login(FTP_USER,FTP_PASSWORD)
@@ -199,7 +199,7 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp.storbinary(f"STOR {up_name}", file)
                 
           comp = "<b>Uploaded<b> ✅"
-          sendMessage(comp, bot, update)
+          sendMessage(comp, self.bot, self.update)
     
         else:
             LOGGER.info(f"Upload Name: {up_name}")
