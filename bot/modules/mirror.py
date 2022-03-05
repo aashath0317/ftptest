@@ -197,15 +197,14 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp_message = sendMessage(up, self.bot, self.update)
                 ftp_message_id = ftp_message.message_id
                 ftp.storbinary(f"STOR {up_name}", file)
-                up = f"{up_name} /n Uploaded ✅"
+                up = f"{up_name} \n Uploaded ✅"
                 editMessage(up, ftp_message)
                 buttons = button_build.ButtonMaker()
                 url_path = requests.utils.quote(f'{download_dict[self.uid].name()}')
                 share_url = f'{INDEX_URL}/{url_path}'
-                if os.path.isdir(f'{DOWNLOAD_DIR}/{self.uid}/{download_dict[self.uid].name()}'):
-                   share_url += '/'
-                   share_url = short_url(share_url)
-                   msg = buttons.buildbutton("⚡ Download Link", share_url)
+                share_url += '/'
+                share_url = short_url(share_url)
+                buttons.buildbutton("⚡ Download Link", share_url)
                 sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(1)))
                 update_all_messages()
         else:
