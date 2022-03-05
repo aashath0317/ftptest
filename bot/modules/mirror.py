@@ -172,8 +172,8 @@ class MirrorListener(listeners.MirrorListeners):
             
         elif self.isFtp: 
           LOGGER.info(f"FTP name: {up_name}")
-          ftp = FTP(FTP_SERVER)
-          ftp.login(FTP_USER,FTP_PASSWORD)
+          #ftp = FTP(FTP_SERVER)
+          #ftp.login(FTP_USER,FTP_PASSWORD)
           def files(path):
             for file in os.listdir(path):
               if os.path.isfile(os.path.join(path, file)):
@@ -184,7 +184,7 @@ class MirrorListener(listeners.MirrorListeners):
           total_files = len(up_path)
           loop = 0
           while not total_files == loop:
-            file_name=up_path[loop]
+            file_name = up_path[loop]
             path2 = glob.glob(os.path.join(file_name, '*'))
             path2 = str(path2[0])
             loop = loop+1
