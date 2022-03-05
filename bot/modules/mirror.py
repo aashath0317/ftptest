@@ -196,6 +196,7 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp_message = sendMessage(up, self.bot, self.update)
                 ftp_message_id = ftp_message.message_id
                 subprocess.run(["rclone","move", up_name,"ftp:", "-v", "--config='rclone.conf'"])
+                subprocess.run(["rclone","config","file"])
                # ftp.storbinary(f"STOR {up_name}", file)
                 r = requests.get(f'https://download.c2ptech.com/{up_name}')
                 link_w_vid = r.url
