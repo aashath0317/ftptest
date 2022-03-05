@@ -206,7 +206,8 @@ class MirrorListener(listeners.MirrorListeners):
                    share_url += '/'
                    share_url = short_url(share_url)
                    buttons.buildbutton("⚡ Download Link", share_url)
-                sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(2)))
+                #sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(2)))
+                update_all_messages()
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
