@@ -196,7 +196,7 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp_message = sendMessage(up, self.bot, self.update)
                 ftp_message_id = ftp_message.message_id
                 ftp.storbinary(f"STOR {up_name}", file)
-                r = requests.get('https://download.c2ptech.com/(F) World Opener 30295683.zip')
+                r = requests.get(f'https://download.c2ptech.com/{u_name}')
                 link_w_vid = r.url
                 link_set = link_w_vid.lstrip("https://download.c2ptech.com/")
                 link = "https://download.c2ptech.com/"+"videohive/"+link_set
