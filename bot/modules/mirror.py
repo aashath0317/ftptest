@@ -8,7 +8,6 @@ import re
 import time
 import shutil
 import glob
-
 from telegram.ext import CommandHandler
 from telegram import InlineKeyboardMarkup
 from ftplib import FTP
@@ -199,14 +198,13 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp.storbinary(f"STOR {up_name}", file)
                 up = f"{up_name} \n Uploaded ✅"
                 editMessage(up, ftp_message)
-                buttons = button_build.ButtonMaker()
-                url_path = requests.utils.quote(f'{download_dict[self.uid].name()}')
-                share_url = f'{INDEX_URL}/{url_path}'
-                share_url += '/'
-                share_url = short_url(share_url)
-                buttons.buildbutton("⚡ Download Link", share_url)
+                r = requests.get('https://download.c2ptech.com/(F) World Opener 30295683.zip')
+                link_w_vid = r.url
+                link_set = link_w_vid.lstrip("https://download.c2ptech.com/")
+                link = "https://download.c2ptech.com/"+"videohive/"+link_set
+                msg = buttons.buildbutton("⚡ Download Link", msg)
                 sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(1)))
-                update_all_messages()
+                
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
