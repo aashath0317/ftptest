@@ -195,7 +195,7 @@ class MirrorListener(listeners.MirrorListeners):
                 file = open(path2, 'rb')
                 up = "Uploading to FTP Server 📤"
                 ftp_message = bot.send_message(up, context.bot, update)
-                ftp_message_id = ftp_message..message_id
+                ftp_message_id = ftp_message.message_id
                 ftp.storbinary(f"STOR {up_name}", file)
                 up = f"{up_name} is Uploaded ✅"
                 bot.edit_message_text(up, ftp_message_id)
