@@ -198,7 +198,7 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp_message_id = ftp_message..message_id
                 ftp.storbinary(f"STOR {up_name}", file)
                 up = f"{up_name} is Uploaded ✅"
-                bot.edit_message_text(up, ftp_message_id, context.bot, update)
+                bot.edit_message_text(up, ftp_message_id)
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
