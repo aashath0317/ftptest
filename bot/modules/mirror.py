@@ -196,14 +196,14 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp_message = sendMessage(up, self.bot, self.update)
                 ftp_message_id = ftp_message.message_id
                 ftp.storbinary(f"STOR {up_name}", file)
-                up = f"{up_name} \n Uploaded ✅"
-                editMessage(up, ftp_message)
                 r = requests.get('https://download.c2ptech.com/(F) World Opener 30295683.zip')
                 link_w_vid = r.url
                 link_set = link_w_vid.lstrip("https://download.c2ptech.com/")
                 link = "https://download.c2ptech.com/"+"videohive/"+link_set
-                msg = buttons.buildbutton("⚡ Download Link", msg)
-                sendMarkup(msg, self.bot, self.update, InlineKeyboardMarkup(buttons.build_menu(1)))
+                up = f"{up_name} \n Uploaded ✅ \n\n Download Link ⚡ : \n {link} "
+                editMessage(up, ftp_message)
+                subprocess.run(["rm", "up_name"])
+                
                 
         else:
             LOGGER.info(f"Upload Name: {up_name}")
