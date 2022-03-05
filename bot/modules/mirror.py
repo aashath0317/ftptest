@@ -12,8 +12,7 @@ import glob
 from telegram.ext import CommandHandler
 from telegram import InlineKeyboardMarkup
 from ftplib import FTP
-
-from bot import Interval, INDEX_URL, BUTTON_FOUR_NAME, BUTTON_FOUR_URL, BUTTON_FIVE_NAME, BUTTON_FIVE_URL, \
+from bot import bot, Interval, INDEX_URL, BUTTON_FOUR_NAME, BUTTON_FOUR_URL, BUTTON_FIVE_NAME, BUTTON_FIVE_URL, \
                 BUTTON_SIX_NAME, BUTTON_SIX_URL, BLOCK_MEGA_FOLDER, BLOCK_MEGA_LINKS, VIEW_LINK, aria2, QB_SEED, \
                 dispatcher, DOWNLOAD_DIR, download_dict, download_dict_lock, TG_SPLIT_SIZE, LOGGER , FTP_SERVER, FTP_USER, FTP_PASSWORD
 from bot.helper.ext_utils import fs_utils, bot_utils
@@ -195,10 +194,10 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp.set_pasv(True)
                 file = open(path2, 'rb')
                 up = "Uploading to FTP Server 📤"
-                sendMessage(up, self.bot, self.update)
+                x = sendMessage(up, self.bot, self.update)
                 ftp.storbinary(f"STOR {up_name}", file)
                 up = f"{up_name} is Uploaded ✅"
-                sendMessage(up, self.bot, self.update)
+                bot.edit_message_text(x, up, self.bot, self.update)
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
