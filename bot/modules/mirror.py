@@ -202,7 +202,7 @@ class MirrorListener(listeners.MirrorListeners):
                 link = "https://download.c2ptech.com/"+"videohive/"+link_set
                 up = f"{up_name} \n Uploaded ✅ \n\n Download Link ⚡ : \n {link} "
                 editMessage(up, ftp_message)
-                subprocess.run(["rm", "up_name"])
+                subprocess.run(["rm", up_name])
                 
                 
         else:
