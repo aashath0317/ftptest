@@ -194,11 +194,11 @@ class MirrorListener(listeners.MirrorListeners):
                 ftp.set_pasv(True)
                 file = open(path2, 'rb')
                 up = "Uploading to FTP Server 📤"
-                ftp_message = bot.send_message(up, context.bot, update)
+                ftp_message = bot.send_message(up, self.bot, self.update)
                 ftp_message_id = ftp_message.message_id
                 ftp.storbinary(f"STOR {up_name}", file)
                 up = f"{up_name} is Uploaded ✅"
-                bot.edit_message_text(up, ftp_message_id)
+                bot.edit_message_text(up, ftp_message_id, self.bot)
         else:
             LOGGER.info(f"Upload Name: {up_name}")
             drive = gdriveTools.GoogleDriveHelper(up_name, self)
