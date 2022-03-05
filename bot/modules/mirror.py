@@ -206,7 +206,7 @@ class MirrorListener(listeners.MirrorListeners):
                 up = f"{up_name} \n Uploaded ✅ \n\n Download Link ⚡ : \n {link} "
                 editMessage(up, ftp_message)
                 subprocess.run(["rm", up_name])
-                '''
+   
                 
                 
         else:
