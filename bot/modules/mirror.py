@@ -190,11 +190,9 @@ class MirrorListener(listeners.MirrorListeners):
             loop = loop+1
             for file in files(file_name):
               if file == up_file:
-                '''
-                ftp.set_pasv(True)
+               # ftp.set_pasv(True)
                 file = open(path2, 'rb')
-                '''
-                up = f"{up_name} /n  Uploading to FTP Server 📤"
+                up = f"{up_name} \n  Uploading to FTP Server 📤"
                 ftp_message = sendMessage(up, self.bot, self.update)
                 ftp_message_id = ftp_message.message_id
                 subprocess.run(["rclone","move", up_name,"ftp:", "-v"])
