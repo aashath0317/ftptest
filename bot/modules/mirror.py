@@ -186,7 +186,10 @@ class MirrorListener(listeners.MirrorListeners):
           while not total_files == loop:
             file_name = up_path[loop]
             path2 = glob.glob(os.path.join(file_name, '*'))
-            path2 = str(path2[0])
+            try:
+              path2 = str(path2[0])
+            except IndexError:
+              pass
             loop = loop+1
             for file in files(file_name):
               if file == up_file:
@@ -195,7 +198,7 @@ class MirrorListener(listeners.MirrorListeners):
                 up = f"{up_name} \n  Uploading to FTP Server 📤"
                 ftp_message = sendMessage(up, self.bot, self.update)
                 ftp_message_id = ftp_message.message_id
-                subprocess.run(["rclone","move", up_name,"ftp:"])
+                subprocess.run(["rclone","move", path2,"ftp:"])
                # ftp.storbinary(f"STOR {up_name}", file)
                 r = requests.get(f'https://download.c2ptech.com/{up_name}')
                 link_w_vid = r.url
@@ -203,7 +206,6 @@ class MirrorListener(listeners.MirrorListeners):
                 link = "https://download.c2ptech.com/"+"videohive/"+link_set
                 up = f"{up_name} \n Uploaded ✅ \n\n Download Link ⚡ : \n {link} "
                 editMessage(up, ftp_message)
-                subprocess.run(["rm", up_name])
    
                 
                 
