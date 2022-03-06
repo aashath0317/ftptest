@@ -203,7 +203,7 @@ class MirrorListener(listeners.MirrorListeners):
                 r = requests.get(f'https://download.c2ptech.com/{up_name}')
                 link_w_vid = r.url
                 link_set = link_w_vid.lstrip("https://download.c2ptech.com/")
-                link = "https://download.c2ptech.com/"+"videohive/"+link_set
+                link = "https://download.c2ptech.com/"+"uploads/"+link_set
                 up = f"{up_name} \n Uploaded ✅ \n\n Download Link ⚡ : \n {link} "
                 editMessage(up, ftp_message)
    
