@@ -573,9 +573,9 @@ ftp_mirror_handler = CommandHandler(BotCommands.FtpMirrorCommand, ftp_mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_ftp_handler = CommandHandler(BotCommands.QbFtpCommand, qb_ftp,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
-qb_unzip_ftp_handler = CommandHandler(BotCommands.QbFtpCommand, qb_unzip_ftp,
+qb_unzip_ftp_handler = CommandHandler(BotCommands.QbFtpUnzipCommand, qb_unzip_ftp,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
-qb_zip_ftp_handler = CommandHandler(BotCommands.QbFtpCommand, qb_zip_ftp,
+qb_zip_ftp_handler = CommandHandler(BotCommands.QbZipFtpCommand, qb_zip_ftp,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 zip_ftp_handler = CommandHandler(BotCommands.ZipFtpCommand, zip_ftp,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
