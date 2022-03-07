@@ -511,9 +511,15 @@ def qb_zip_mirror(update, context):
 
 def leech(update, context):
     _mirror(context.bot, update, isLeech=True)
+    
+def ftp_mirror(update, context):
+    _mirror(context.bot, update, isFtp=True)
 
 def unzip_leech(update, context):
     _mirror(context.bot, update, extract=True, isLeech=True)
+    
+def unzip_ftp(update, context):
+    _mirror(context.bot, update, extract=True, isFtp=True) 
 
 def zip_leech(update, context):
     _mirror(context.bot, update, True, isLeech=True)
@@ -521,25 +527,23 @@ def zip_leech(update, context):
 def qb_leech(update, context):
     _mirror(context.bot, update, isQbit=True, isLeech=True)
 
+def qb_ftp(update, context):
+    _mirror(context.bot, update, isQbit=True, isFtp=True)
+
 def qb_unzip_leech(update, context):
     _mirror(context.bot, update, extract=True, isQbit=True, isLeech=True)
-
+    
+def qb_unzip_ftp(update, context):
+    _mirror(context.bot, update, isQbit=True, extract=True, isFtp=True)
+   
 def qb_zip_leech(update, context):
     _mirror(context.bot, update, True, isQbit=True, isLeech=True)
     
 def zip_ftp(update, context):
-  if not FTP_SERVER == False and not FTP_USER == False and not FTP_PASSWORD == False:
     _mirror(context.bot, update, True, isFtp=True)
-  else:
-    ftpmsg = "<b>FTP</b> env not provided"
-    sendMessage(ftpmsg, context.bot, update)
  
 def qb_zip_ftp(update, context):
-    if not FTP_SERVER == False and not FTP_USER == False and not FTP_PASSWORD == False:
-       _mirror(context.bot, update, True, isQbit=True, isFtp=True)
-    else:
-      ftpmsg = "<b>FTP</b> env not provided"
-      sendMessage(ftpmsg, context.bot, update)
+    _mirror(context.bot, update, True, isQbit=True, isFtp=True)
 
 mirror_handler = CommandHandler(BotCommands.MirrorCommand, mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
@@ -565,9 +569,15 @@ qb_unzip_leech_handler = CommandHandler(BotCommands.QbUnzipLeechCommand, qb_unzi
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_zip_leech_handler = CommandHandler(BotCommands.QbZipLeechCommand, qb_zip_leech,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
-zip_ftp_handler = CommandHandler(BotCommands.ZipFtpCommand, zip_ftp,
+ftp_mirror_handler = CommandHandler(BotCommands.FtpMirrorCommand, ftp_mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
-qb_zip_ftp_handler = CommandHandler(BotCommands.QbZipFtpCommand, qb_zip_ftp,
+qb_ftp_handler = CommandHandler(BotCommands.QbFtpCommand, qb_ftp,
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+qb_unzip_ftp_handler = CommandHandler(BotCommands.QbFtpCommand, qb_unzip_ftp,
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+qb_zip_ftp_handler = CommandHandler(BotCommands.QbFtpCommand, qb_zip_ftp,
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+zip_ftp_handler = CommandHandler(BotCommands.ZipFtpCommand, zip_ftp,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 
 dispatcher.add_handler(mirror_handler)
@@ -582,5 +592,8 @@ dispatcher.add_handler(zip_leech_handler)
 dispatcher.add_handler(qb_leech_handler)
 dispatcher.add_handler(qb_unzip_leech_handler)
 dispatcher.add_handler(qb_zip_leech_handler)
+dispatcher.add_handler(ftp_mirror_handler)
+dispatcher.add_handler(qb_ftp_handler)
+dispatcher.add_handler(qb_unzip_ftp_handler)
 dispatcher.add_handler(zip_ftp_handler)
 dispatcher.add_handler(qb_zip_ftp_handler)
