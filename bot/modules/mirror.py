@@ -571,6 +571,8 @@ qb_zip_leech_handler = CommandHandler(BotCommands.QbZipLeechCommand, qb_zip_leec
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 ftp_mirror_handler = CommandHandler(BotCommands.FtpMirrorCommand, ftp_mirror,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+unzip_ftp_handler = CommandHandler(BotCommands.UnzipFtpCommand, unzip_ftp,
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_ftp_handler = CommandHandler(BotCommands.QbFtpCommand, qb_ftp,
                                 filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
 qb_unzip_ftp_handler = CommandHandler(BotCommands.QbFtpUnzipCommand, qb_unzip_ftp,
